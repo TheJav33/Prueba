@@ -63,16 +63,18 @@ public class TareaREST {
 		Tarea nuevaTarea = new Tarea();
 		try {
 			//Validaciones por si faltan datos de entrada
-			if(tarea.get("DG_CADENA") == null || 
-					tarea.get("DF_FECHA_CREACION") == null ||
-					tarea.get("DB_VIGENTE") == null) {
+			if(tarea.get("dg_CADENA") == null || 
+					tarea.get("df_FECHA_CREACION") == null ||
+					tarea.get("db_VIGENTE") == null) {
 				return ResponseEntity.noContent().build();
+				
 			}
 			
-			nuevaTarea.setDG_CADENA(tarea.get("DG_CADENA").toString());
-			nuevaTarea.setDB_VIGENTE(tarea.get("DB_VIGENTE").toString());
+			boolean dbVigente = Boolean.parseBoolean(tarea.get("db_VIGENTE")); 
+			nuevaTarea.setDG_CADENA(tarea.get("dg_CADENA").toString());
+			nuevaTarea.setDB_VIGENTE(dbVigente);
 			
-			String sDate1=tarea.get("DF_FECHA_CREACION");  
+			String sDate1=tarea.get("df_FECHA_CREACION");  
 			Date fechaParseada=new SimpleDateFormat("yyyy-MM-dd").parse(sDate1);  
 			nuevaTarea.setDF_FECHA_CREACION(fechaParseada);
 			
@@ -102,23 +104,28 @@ public class TareaREST {
 	public ResponseEntity<Tarea> actualizarTarea(@RequestBody Map<String, String> tarea) throws ParseException{
 		
 		try {
+			Long dnIdentificador = Long.parseLong(tarea.get("dn_IDENTIFICADOR"));
+			String dgCadena = tarea.get("dg_CADENA");
+			String dfFechaCreacion = tarea.get("df_FECHA_CREACION");
+			Boolean dbVigente =Boolean.parseBoolean(tarea.get("db_VIGENTE"));
+			
 			//Validacion de campos
-			if(tarea.get("dn_identificador") == null || tarea.get("DG_CADENA") == null
-					|| tarea.get("DF_FECHA_CREACION") == null || tarea.get("DB_VIGENTE") == null) {
+			if(tarea.get("dn_IDENTIFICADOR") == null || tarea.get("dg_CADENA") == null || 
+					tarea.get("df_FECHA_CREACION") == null ||
+					tarea.get("db_VIGENTE") == null) {
 				return ResponseEntity.noContent().build();
 			}
-			Long dnIdentificador = Long.parseLong(tarea.get("dn_identificador"));  
+			 
 			Optional<Tarea> optionalTareas = tareaDAO.findById(dnIdentificador);
 			if(optionalTareas.isPresent()) {
 				Tarea actualizarTarea = optionalTareas.get();
-				actualizarTarea.setDG_CADENA(tarea.get("DG_CADENA").toString());
+				actualizarTarea.setDG_CADENA(tarea.get("dg_CADENA").toString());
 				
-				String sDate1=tarea.get("DF_FECHA_CREACION");  
+				String sDate1=tarea.get("df_FECHA_CREACION");  
 				Date fechaParseada=new SimpleDateFormat("yyyy-MM-dd").parse(sDate1);
 				
-				String DB_VIGENTE = tarea.get("DB_VIGENTE").toString();
 				actualizarTarea.setDF_FECHA_CREACION(fechaParseada);
-				actualizarTarea.setDB_VIGENTE(DB_VIGENTE);
+				actualizarTarea.setDB_VIGENTE(dbVigente);
 				tareaDAO.save(actualizarTarea);
 				return ResponseEntity.ok(actualizarTarea);
 			}else {

@@ -38,13 +38,15 @@ public class Tarea {
 		DF_FECHA_CREACION = dF_FECHA_CREACION;
 	}
 
-	public String getDB_VIGENTE() {
+	
+	public boolean isDB_VIGENTE() {
 		return DB_VIGENTE;
 	}
 
-	public void setDB_VIGENTE(String dB_VIGENTE) {
+	public void setDB_VIGENTE(boolean dB_VIGENTE) {
 		DB_VIGENTE = dB_VIGENTE;
 	}
+
 
 	@Id
 	@Column(name="DN_IDENTIFICADOR")
@@ -57,8 +59,20 @@ public class Tarea {
 	@Column(name="DF_FECHA_CREACION",nullable=false,length=30)
 	private Date DF_FECHA_CREACION;
 	
-	@Column(name="DB_VIGENTE",nullable=false,length=30)
-	private String DB_VIGENTE;
+	@Column(name="DB_VIGENTE",nullable=false)
+	private boolean DB_VIGENTE;
+
+	public Tarea(Long dN_IDENTIFICADOR, String dG_CADENA, Date dF_FECHA_CREACION, boolean dB_VIGENTE) {
+		super();
+		DN_IDENTIFICADOR = dN_IDENTIFICADOR;
+		DG_CADENA = dG_CADENA;
+		DF_FECHA_CREACION = dF_FECHA_CREACION;
+		DB_VIGENTE = dB_VIGENTE;
+	}
+
+	public Tarea() {
+		super();
+	}
 	
 	
 	
